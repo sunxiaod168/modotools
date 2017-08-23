@@ -1,3 +1,3 @@
-//require('./ProductFoundation');
-require('./ProductPrice');
-require('./ProductRetailPrice');
+require('./ProductFoundation');
+// require('./ProductPrice');
+// require('./ProductRetailPrice');

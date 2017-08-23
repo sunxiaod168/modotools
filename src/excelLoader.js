@@ -1,4 +1,3 @@
-const path = require('path');
 var convertExcel = require('excel-as-json').processFile;
 
 module.exports = function (src, dst, options, callback) {

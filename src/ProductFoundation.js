@@ -115,13 +115,11 @@ const mapping = {
   "<ProductCode>": "物品编号"
 };
 
-
 const excelLoader = require('./excelLoader.js');
 const writeFile = require('write-file');
 
-
-var src = './简艺物品清单.xlsx';
-var dst = './json/product.json';
+var src = 'src/简艺物品清单.xlsx';
+var dst = 'dist/json/product.json';
 var options = {
   sheet: '1'
 };
@@ -212,7 +210,7 @@ excelLoader(src, dst, options, function(err, data) {
 
   
 
-  writeFile('./sql/ProductFoundation_Insert.sql', insertSql, function(err) {
+  writeFile('dist/sql/ProductFoundation_Insert.sql', insertSql, function(err) {
 
   });
 

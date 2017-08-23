@@ -47,8 +47,8 @@ const excelLoader = require('./excelLoader.js');
 const writeFile = require('write-file');
 
 
-var src = './简艺物品清单.xlsx';
-var dst = './json/product.json';
+var src = 'src/简艺物品清单.xlsx';
+var dst = 'dist/json/product.json';
 var options = {
   sheet: '1'
 };
@@ -120,8 +120,7 @@ excelLoader(src, dst, options, function(err, data) {
     insertSql += sql + '\nGO\n';
   }
 
-  writeFile('./sql/ProductPrice_Insert.sql', insertSql, function(err) {
+  writeFile('dist/sql/ProductPrice_Insert.sql', insertSql, function(err) {
 
   });
-
 });

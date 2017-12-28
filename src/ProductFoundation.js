@@ -1,217 +1,228 @@
-const insert = ' INSERT INTO [ProductFoundation]' +
-  '([ZZID]' +
-  ',[Name]' +
-  ',[BrandID]' +
-  ',[CatenaID]' +
-  ',[SortID]' +
-  ',[XingHao]' +
-  ',[GuiGe]' +
-  ',[ZhuCai]' +
-  ',[FuCai]' +
-  ',[JiLiangDanWei]' +
-  ',[FuZhuJiLiangDanWei]' +
-  ',[QiYongFuZhuYanSe]' +
-  ',[QiYongRuanTi]' +
-  ',[ZuiDiCunLiang]' +
-  ',[ZuiGaoCunLiang]' +
-  ',[ZongBaoShu]' +
-  ',[BaoZhuangTiJi]' +
-  ',[Weight]' +
-  ',[BeiZhu]' +
-  ',[Enable]' +
-  ',[ImagePath]' +
-  ',[CreateTime]' +
-  ',[CreateUser]' +
-  ',[UpdateUser]' +
-  ',[UpdateTime]' +
-  ',[IsDelete]' +
-  ',[ProductCode])' +
-  'VALUES' +
-  '(<ZZID>' +
-  ',<Name>' +
-  ',<BrandID>' +
-  ',<CatenaID>' +
-  ',<SortID>' +
-  ',<XingHao>' +
-  ',<GuiGe>' +
-  ',<ZhuCai>' +
-  ',<FuCai>' +
-  ',<JiLiangDanWei>' +
-  ',<FuZhuJiLiangDanWei>' +
-  ',<QiYongFuZhuYanSe>' +
-  ',<QiYongRuanTi>' +
-  ',<ZuiDiCunLiang>' +
-  ',<ZuiGaoCunLiang>' +
-  ',<ZongBaoShu>' +
-  ',<BaoZhuangTiJi>' +
-  ',<Weight>' +
-  ',<BeiZhu>' +
-  ',<Enable>' +
-  ',<ImagePath>' +
-  ',<CreateTime>' +
-  ',<CreateUser>' +
-  ',<UpdateUser>' +
-  ',<UpdateTime>' +
-  ',<IsDelete>' +
-  ',<ProductCode>)';
+const Insert = 'INSERT INTO [ProductFoundation] VALUES ({0})';
 
-const cols = [
-  "<ZZID>",
-  "<Name>",
-  "<BrandID>",
-  "<CatenaID>",
-  "<SortID>",
-  "<XingHao>",
-  "<GuiGe>",
-  "<ZhuCai>",
-  "<FuCai>",
-  "<JiLiangDanWei>",
-  "<FuZhuJiLiangDanWei>",
-  "<QiYongFuZhuYanSe>",
-  "<QiYongRuanTi>",
-  "<ZuiDiCunLiang>",
-  "<ZuiGaoCunLiang>",
-  "<ZongBaoShu>",
-  "<BaoZhuangTiJi>",
-  "<Weight>",
-  "<BeiZhu>",
-  "<Enable>",
-  "<ImagePath>",
-  "<CreateTime>",
-  "<CreateUser>",
-  "<UpdateUser>",
-  "<UpdateTime>",
-  "<IsDelete>",
-  "<ProductCode>"
+const Fields = [
+  {
+    name: 'ZZID',
+    type: 'string'
+  },
+  {
+    name: 'Name',
+    type: 'string'
+  },
+  {
+    name: 'BrandID',
+    type: 'number'
+  },
+  {
+    name: 'CatenaID',
+    type: 'number'
+  },
+  {
+    name: 'SortID',
+    type: 'number'
+  },
+  {
+    name: 'XingHao',
+    type: 'string'
+  },
+  {
+    name: 'GuiGe',
+    type: 'string'
+  },
+  {
+    name: 'ZhuCai',
+    type: 'number'
+  },
+  {
+    name: 'FuCai',
+    type: 'number'
+  },
+  {
+    name: 'JiLiangDanWei',
+    type: 'string'
+  },
+  {
+    name: 'FuZhuJiLiangDanWei',
+    type: 'string'
+  },
+  {
+    name: 'QiYongFuZhuYanSe',
+    type: 'number'
+  },
+  {
+    name: 'QiYongRuanTi',
+    type: 'number'
+  },
+  {
+    name: 'ZuiDiCunLiang',
+    type: 'number'
+  },
+  {
+    name: 'ZuiGaoCunLiang',
+    type: 'number'
+  },
+  {
+    name: 'ZongBaoShu',
+    type: 'number'
+  },
+  {
+    name: 'BaoZhuangTiJi',
+    type: 'number'
+  },
+  {
+    name: 'Weight',
+    type: 'number'
+  },
+  {
+    name: 'BeiZhu',
+    type: 'string'
+  },
+  {
+    name: 'Enable',
+    type: 'number'
+  },
+  {
+    name: 'ImagePath',
+    type: 'string'
+  },
+  {
+    name: 'CreateTime',
+    type: 'string'
+  },
+  {
+    name: 'CreateUser',
+    type: 'number'
+  },
+  {
+    name: 'UpdateUser',
+    type: 'number'
+  },
+  {
+    name: 'UpdateTime',
+    type: 'string'
+  },
+  {
+    name: 'IsDelete',
+    type: 'number'
+  },
+  {
+    name: 'ProductCode',
+    type: 'string'
+  },
+  {
+    name: 'ShortName',
+    type: 'string'
+  }
 ];
-
-const mapping = {
-  "<ZZID>": "组织编号",
-  "<Name>": "物品名称",
-  "<BrandID>": "品牌ID",
-  "<CatenaID>": "系列ID",
-  "<SortID>": "类别ID",
-  "<XingHao>": "型号",
-  "<GuiGe>": "规格",
-  "<ZhuCai>": "主材ID",
-  "<FuCai>": "辅材ID",
-  "<JiLiangDanWei>": "计量单位",
-  "<FuZhuJiLiangDanWei>": "辅助计量单位",
-  "<QiYongFuZhuYanSe>": "",
-  "<QiYongRuanTi>": "",
-  "<ZuiDiCunLiang>": "",
-  "<ZuiGaoCunLiang>": "",
-  "<ZongBaoShu>": "包装数量",
-  "<BaoZhuangTiJi>": "",
-  "<Weight>": "",
-  "<BeiZhu>": "备注",
-  "<Enable>": "",
-  "<ImagePath>": "",
-  "<CreateTime>": "",
-  "<CreateUser>": "",
-  "<UpdateUser>": "",
-  "<UpdateTime>": "",
-  "<IsDelete>": "",
-  "<ProductCode>": "物品编号"
+const FieldsMapping = {
+  'ZZID': '组织编号',
+  'Name': '物品长名称',
+  'BrandID': '品牌ID',
+  'CatenaID': '系列ID',
+  'SortID': '类别ID',
+  'XingHao': '型号',
+  'GuiGe': '规格',
+  'ZhuCai': '主材ID',
+  'FuCai': '辅材ID',
+  'JiLiangDanWei': '计量单位',
+  'FuZhuJiLiangDanWei': '辅助计量单位',
+  'QiYongFuZhuYanSe': '启用辅助颜色',
+  'QiYongRuanTi': '启用软体特性',
+  'ZuiDiCunLiang': '最低存量',
+  'ZuiGaoCunLiang': '最高存量',
+  'ZongBaoShu': '总包数',
+  'BaoZhuangTiJi': '包装体积',
+  'Weight': '重量',
+  'BeiZhu': '备注',
+  'Enable': null,
+  'ImagePath': null,
+  'CreateTime': null,
+  'CreateUser': null,
+  'UpdateUser': null,
+  'UpdateTime': null,
+  'IsDelete': null,
+  'ProductCode': '物品编号',
+  'ShortName': '物品短名称',
 };
 
-const excelLoader = require('./excelLoader.js');
+
+const recursive = require('recursive-readdir');
+const path = require('path');
+const convertExcel = require('excel-as-json').processFile;
 const writeFile = require('write-file');
 
-var src = 'src/简艺物品清单.xlsx';
-var dst = 'dist/json/product.json';
-var options = {
-  sheet: '1'
-};
-var insertSql = '';
 
-excelLoader(src, dst, options, function(err, data) {
+var makeInsert = function (dirPath) {
 
-  for (var i = 0, iLen = data.length; i < iLen; i++) {
+  recursive(dirPath, function (err, files) {
 
-    var sql = insert;
-    var dataItem = data[i];
+    var now = (new Date()).toLocaleString("zh-CN", {
+      hour12: false
+    });
+    var insertSql = '';
+    var i = 0,
+      len = files.length;
 
-    for (var j = 0, jLen = cols.length; j < jLen; j++) {
+    files.forEach(file => {
+      i++;
+      convertExcel(file, null, null, function (err, data) {
+        data.forEach(item => {
 
-      var colName = cols[j];
-      var fieldName = mapping[colName];
-      var colValue = fieldName.length == 0 ? null : dataItem[fieldName];
-      var now = (new Date()).toLocaleString("zh-CN", {
-        hour12: false
+          var values = '';
+          Fields.forEach(field => {
+
+            var colName = FieldsMapping[field.name];
+            var colValue = null;
+            if (colName) {
+              colValue = item[colName];
+              if(colValue.length == 0 && field.type == 'number'){
+                colValue = 0;
+              }
+            } else {
+              switch (field.name) {
+                case 'Enable':
+                  colValue = 1;
+                  break;
+                case 'ImagePath':
+                  colValue = null;
+                  break;
+                case 'CreateTime':
+                  colValue = now;
+                  break;
+                case 'CreateUser':
+                  colValue = 20;
+                  break;
+                case 'UpdateUser':
+                  colValue = 20;
+                  break;
+                case 'UpdateTime':
+                  colValue = now;
+                  break;
+                case 'IsDelete':
+                  colValue = 0;
+                  break;
+                default:
+                  break;
+              }
+            }
+            if(field.type == 'string' && colValue != null){
+              colValue = 'N\'' + colValue + '\'';
+            }
+            values += ','+ colValue;
+          });
+          values = values.substr(1);
+          insertSql += Insert.replace('{0}', values) + '\n';
+        });
+
+        if (i == len) {
+          writeFile('dist/product/insert.sql', insertSql, function (err) {
+            if (err) return console.log(err);
+          })
+        }
       });
 
-      if (colValue == null) {
-
-        switch (colName) {  
-          case '<FuZhuJiLiangDanWei>':
-            colValue = '-';
-            break;
-          case '<QiYongFuZhuYanSe>':
-            colValue = 0;
-            break;
-          case '<QiYongRuanTi>':
-            colValue = 0;
-            break;
-          case '<ZuiDiCunLiang>':
-            colValue = 0;
-            break;
-          case '<ZuiGaoCunLiang>':
-            colValue = 0;
-            break;
-          case '<ZongBaoShu>':
-            colValue = 0;
-            break;
-          case '<BaoZhuangTiJi>':
-            colValue = 0;
-            break;
-          case '<Weight>':
-            colValue = 0;
-            break;
-          case '<Enable>':
-            colValue = 1;
-            break;
-          case '<ImagePath>':
-            colValue = null;
-            break;
-          case '<CreateTime>':
-            colValue = now;
-            break;
-          case '<CreateUser>':
-            colValue = 20;
-            break;
-          case '<UpdateUser>':
-            colValue = 20;
-            break;
-          case '<UpdateTime>':
-            colValue = now;
-            break;
-          case '<IsDelete>':
-            colValue = 0;
-            break;
-        }
-      }
-
-      if (colValue != null && colValue != 'null') {
-        colValue = 'N\'' + colValue + '\'';
-      }
-
-      if (colValue == 'null') {
-
-        colValue = null;
-      }
-
-      sql = sql.replace(colName, colValue);
-
-    }
-
-    insertSql += sql + '\nGO\n';
-  }
-
-  
-
-  writeFile('dist/sql/ProductFoundation_Insert.sql', insertSql, function(err) {
-
+    });
   });
 
-});
+}
+module.exports.makeInsert = makeInsert;

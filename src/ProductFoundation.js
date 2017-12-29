@@ -116,7 +116,7 @@ const Fields = [{
   }
 ];
 const FieldsMapping = {
-  'ID':null,
+  'ID': 'ID',
   'ZZID': '组织编号',
   'Name': '物品名称',
   'BrandID': '品牌ID',
@@ -148,19 +148,15 @@ const FieldsMapping = {
 };
 const insertSQL = require('./insertSQL');
 
-var makeInsert = function (excelDirPath, startID) {
-  var pid = startID;
+var makeInsert = function (data, fileName) {
   var now = (new Date()).toLocaleString("zh-CN", {
     hour12: false
   });
 
-  function nullFieldHandler(field){ 
+  function nullFieldHandler(field) {
 
     var colValue = null;
-    switch (field.name) {
-      case 'ID':
-        colValue = pid++;
-        break;
+    switch (field.name) {     
       case 'Enable':
         colValue = 1;
         break;
@@ -188,7 +184,7 @@ var makeInsert = function (excelDirPath, startID) {
     return colValue;
   }
 
-  insertSQL(excelDirPath,'ProductFoundation', Fields, FieldsMapping, nullFieldHandler);
+  insertSQL(data, fileName, 'ProductFoundation', Fields, FieldsMapping, nullFieldHandler, true);
 }
 
 module.exports.makeInsert = makeInsert;

@@ -1,126 +1,95 @@
-const insert = 'INSERT INTO [ProductPrice]' +
-  '([ZZID]' +
-  ',[ProductID]' +
-  ',[BatchID]' +
-  ',[CostPrice]' +
-  ',[WholesalePrice]' +
-  ',[CreateUser]' +
-  ',[CreateTime]' +
-  ',[UpdateTime]' +
-  ',[UpdateUser])' +
-  'VALUES' +
-  '(<ZZID>' +
-  ',<ProductID>' +
-  ',<BatchID>' +
-  ',<CostPrice>' +
-  ',<WholesalePrice>' +
-  ',<CreateUser>' +
-  ',<CreateTime>' +
-  ',<UpdateTime>' +
-  ',<UpdateUser>)';
-
-const cols = [
-  '<ZZID>',
-  '<ProductID>',
-  '<BatchID>',
-  '<CostPrice>',
-  '<WholesalePrice>',
-  '<CreateUser>',
-  '<CreateTime>',
-  '<UpdateTime>',
-  '<UpdateUser>'
+const Fields = [{
+    name: 'ID',
+    type: 'number'
+  },
+  {
+    name: 'ZZID',
+    type: 'string'
+  },
+  {
+    name: 'ProductID',
+    type: 'number'
+  },
+  {
+    name: 'BatchID',
+    type: 'string'
+  },
+  {
+    name: 'CostPrice',
+    type: 'number'
+  },
+  {
+    name: 'WholesalePrice',
+    type: 'number'
+  },
+  {
+    name: 'CreateUser',
+    type: 'number'
+  },
+  {
+    name: 'CreateTime',
+    type: 'string'
+  },
+  {
+    name: 'UpdateTime',
+    type: 'string'
+  },
+  {
+    name: 'UpdateUser',
+    type: 'number'
+  }
 ];
-
-const mapping = {
-  '<ZZID>': '组织编号',
-  '<ProductID>': '',
-  '<BatchID>': '',
-  '<CostPrice>': '单价1',
-  '<WholesalePrice>': '',
-  '<CreateUser>': '',
-  '<CreateTime>': '',
-  '<UpdateTime>': '',
-  '<UpdateUser>': ''
+const FieldsMapping = {
+  'ID': null,
+  'ZZID': '组织编号',
+  'ProductID': 'ID',
+  'BatchID': null,
+  'CostPrice': '成本价',
+  'WholesalePrice': null,
+  'CreateUser': null,
+  'CreateTime': null,
+  'UpdateTime': null,
+  'UpdateUser': null
 };
+const insertSQL = require('./insertSQL');
+const moment = require('moment');
 
-const excelLoader = require('./excelLoader.js');
-const writeFile = require('write-file');
-
-
-var src = 'src/简艺物品清单.xlsx';
-var dst = 'dist/json/product.json';
-var options = {
-  sheet: '1'
-};
-var insertSql = '';
-
-require("date-format-lite");
-
-excelLoader(src, dst, options, function(err, data) {
-
+var makeInsert = function (data, fileName, startID) {
+  
+  var id = startID;  
   var now = (new Date()).toLocaleString("zh-CN", {
-        hour12: false
-      });
+    hour12: false
+  });
+  var batchID = 'PC' + moment().format('YYYYMMDDHHmm');
 
-  var batchID = 'PC' + (new Date()).format('YYYYMMDDhhmm');
-  var productID = 458;
+  function nullFieldHandler(field) {
 
-  for (var i = 0, iLen = data.length; i < iLen; i++) {
-
-    var sql = insert;
-    var dataItem = data[i];
-
-    for (var j = 0, jLen = cols.length; j < jLen; j++) {
-
-      var colName = cols[j];
-      var fieldName = mapping[colName];
-      var colValue = fieldName.length == 0 ? null : dataItem[fieldName];
-      
-
-      if (colValue == null) {
-
-        switch (colName) {  
-          case '<ProductID>':
-            colValue = productID++;
-            break;
-          case '<BatchID>':
-            colValue = batchID;
-            break;
-          case '<WholesalePrice>':
-            colValue = null;
-            break;
-          case '<CreateUser>':
-            colValue = 20;
-            break;
-          case '<CreateTime>':
-            colValue = now;
-            break;
-          case '<UpdateTime>':
-            colValue = now;
-            break;
-          case '<UpdateUser>':
-            colValue = 20;
-            break;         
-        }
-      }
-
-      if (colValue != null && colValue != 'null') {
-        colValue = 'N\'' + colValue + '\'';
-      }
-
-      if (colValue == 'null') {
-
+    var colValue = null;
+    switch (field.name) {
+      case 'ID':
+        colValue = id++;
+        break;     
+      case 'BatchID':
+        colValue = batchID;
+        break;
+      case 'WholesalePrice':
         colValue = null;
-      }
-
-      sql = sql.replace(colName, colValue);
-
+        break;
+      case 'CreateUser':
+      case 'UpdateUser':
+        colValue = 20;
+        break;
+      case 'CreateTime':
+      case 'UpdateTime':
+        colValue = now;
+        break;
+      default:
+        break;
     }
-
-    insertSql += sql + '\nGO\n';
+    return colValue;
   }
 
-  writeFile('dist/sql/ProductPrice_Insert.sql', insertSql, function(err) {
+  insertSQL(data, fileName, 'ProductPrice', Fields, FieldsMapping, nullFieldHandler, true);
+}
 
-  });
-});
+module.exports.makeInsert = makeInsert;

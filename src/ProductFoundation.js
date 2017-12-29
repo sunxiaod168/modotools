@@ -1,6 +1,7 @@
-const Insert = 'INSERT INTO [ProductFoundation] VALUES ({0})';
-
-const Fields = [
+const Fields = [{
+    name: 'ID',
+    type: 'number'
+  },
   {
     name: 'ZZID',
     type: 'string'
@@ -115,8 +116,9 @@ const Fields = [
   }
 ];
 const FieldsMapping = {
+  'ID':null,
   'ZZID': '组织编号',
-  'Name': '物品长名称',
+  'Name': '物品名称',
   'BrandID': '品牌ID',
   'CatenaID': '系列ID',
   'SortID': '类别ID',
@@ -144,85 +146,49 @@ const FieldsMapping = {
   'ProductCode': '物品编号',
   'ShortName': '物品短名称',
 };
+const insertSQL = require('./insertSQL');
 
-
-const recursive = require('recursive-readdir');
-const path = require('path');
-const convertExcel = require('excel-as-json').processFile;
-const writeFile = require('write-file');
-
-
-var makeInsert = function (dirPath) {
-
-  recursive(dirPath, function (err, files) {
-
-    var now = (new Date()).toLocaleString("zh-CN", {
-      hour12: false
-    });
-    var insertSql = '';
-    var i = 0,
-      len = files.length;
-
-    files.forEach(file => {
-      i++;
-      convertExcel(file, null, null, function (err, data) {
-        data.forEach(item => {
-
-          var values = '';
-          Fields.forEach(field => {
-
-            var colName = FieldsMapping[field.name];
-            var colValue = null;
-            if (colName) {
-              colValue = item[colName];
-              if(colValue.length == 0 && field.type == 'number'){
-                colValue = 0;
-              }
-            } else {
-              switch (field.name) {
-                case 'Enable':
-                  colValue = 1;
-                  break;
-                case 'ImagePath':
-                  colValue = null;
-                  break;
-                case 'CreateTime':
-                  colValue = now;
-                  break;
-                case 'CreateUser':
-                  colValue = 20;
-                  break;
-                case 'UpdateUser':
-                  colValue = 20;
-                  break;
-                case 'UpdateTime':
-                  colValue = now;
-                  break;
-                case 'IsDelete':
-                  colValue = 0;
-                  break;
-                default:
-                  break;
-              }
-            }
-            if(field.type == 'string' && colValue != null){
-              colValue = 'N\'' + colValue + '\'';
-            }
-            values += ','+ colValue;
-          });
-          values = values.substr(1);
-          insertSql += Insert.replace('{0}', values) + '\n';
-        });
-
-        if (i == len) {
-          writeFile('dist/product/insert.sql', insertSql, function (err) {
-            if (err) return console.log(err);
-          })
-        }
-      });
-
-    });
+var makeInsert = function (excelDirPath, startID) {
+  var pid = startID;
+  var now = (new Date()).toLocaleString("zh-CN", {
+    hour12: false
   });
 
+  function nullFieldHandler(field){ 
+
+    var colValue = null;
+    switch (field.name) {
+      case 'ID':
+        colValue = pid++;
+        break;
+      case 'Enable':
+        colValue = 1;
+        break;
+      case 'ImagePath':
+        colValue = null;
+        break;
+      case 'CreateTime':
+        colValue = now;
+        break;
+      case 'CreateUser':
+        colValue = 20;
+        break;
+      case 'UpdateUser':
+        colValue = 20;
+        break;
+      case 'UpdateTime':
+        colValue = now;
+        break;
+      case 'IsDelete':
+        colValue = 0;
+        break;
+      default:
+        break;
+    }
+    return colValue;
+  }
+
+  insertSQL(excelDirPath,'ProductFoundation', Fields, FieldsMapping, nullFieldHandler);
 }
+
 module.exports.makeInsert = makeInsert;

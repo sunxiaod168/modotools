@@ -1,6 +1,3 @@
-const recursive = require('recursive-readdir');
-const path = require('path');
-const convertExcel = require('excel-as-json').processFile;
 const writeFile = require('write-file');
 
 var create = function (data, fileName, tableName, fields, fieldMapping, nullFieldHandler, idInsertOn) {

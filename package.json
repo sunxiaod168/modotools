@@ -4,16 +4,19 @@
   "description": "数据脚本生成工具",
   "main": "index.js",
   "scripts": {
-    "sql":"node ./src/index",
+    "sql": "node ./src/index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jack",
   "license": "ISC",
   "devDependencies": {
-    "excel-as-json": "^2.0.1",
     "load-json-file": "^4.0.0",
     "moment": "^2.20.1",
     "uuid": "^3.1.0",
     "write-file": "^1.0.0"
+  },
+  "dependencies": {
+    "excel-as-json": "^2.0.1",
+    "recursive-readdir": "^2.2.2"
   }
 }

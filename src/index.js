@@ -4,7 +4,8 @@ const product = require('./ProductFoundation');
 const productPrice = require('./ProductPrice');
 const productRetailPrice = require('./ProductRetailPrice');
 const loadJsonFile = require('load-json-file');
-const updateProductRetailPrice = require('./UpdateProductRetailPrice')
+const updateProductRetailPrice = require('./UpdateProductRetailPrice');
+const installDispatchHeader =require('./InstallDispatchHeader');
 
 // excelToJSON('Excel/ProductFoundation', 600, function (jsonFile) {
 
@@ -17,10 +18,19 @@ const updateProductRetailPrice = require('./UpdateProductRetailPrice')
 //     });
 // });
 
-excelToJSON('Excel/ProductRetailPrice', null, function (jsonFile) {
+// excelToJSON('Excel/ProductRetailPrice', null, function (jsonFile) {
+
+//     var fileName = path.basename(jsonFile, '.json');
+//     loadJsonFile(jsonFile).then(data => {
+//         updateProductRetailPrice(data, fileName);       
+//     });
+// });
+
+
+excelToJSON('Excel/InstallDispatchHeader', null, function (jsonFile) {
 
     var fileName = path.basename(jsonFile, '.json');
     loadJsonFile(jsonFile).then(data => {
-        updateProductRetailPrice(data, fileName);       
+        installDispatchHeader.makeInsert(data, fileName);       
     });
 });

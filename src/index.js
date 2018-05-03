@@ -12,10 +12,13 @@ excelToJSON('Excel/ProductFoundation', 600, function (jsonFile) {
     var fileName = path.basename(jsonFile, '.json');
     loadJsonFile(jsonFile).then(data => {
         
-        var productStartID = 862
+        var productStartID = 862;
+        var productPriceStartID = 631;
+        var priceVersion = 'V2100001001';
+
         product.makeInsert(data, fileName, productStartID);
-        productPrice.makeInsert(data, fileName, 631, productStartID);
-        productRetailPrice.makeInsert(data, fileName, productStartID, 'V2100001001');
+        productPrice.makeInsert(data, fileName, productPriceStartID, productStartID);
+        productRetailPrice.makeInsert(data, fileName, productStartID, priceVersion);
     });
 });
 

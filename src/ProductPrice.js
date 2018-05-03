@@ -41,8 +41,8 @@ const Fields = [{
 ];
 const FieldsMapping = {
   'ID': null,
-  'ZZID': '组织编号',
-  'ProductID': 'ID',
+  'ZZID': '组织ID',
+  'ProductID': null,
   'BatchID': null,
   'CostPrice': '成本价',
   'WholesalePrice': null,
@@ -54,9 +54,8 @@ const FieldsMapping = {
 const insertSQL = require('./insertSQL');
 const moment = require('moment');
 
-var makeInsert = function (data, fileName, startID) {
-  
-  var id = startID;  
+var makeInsert = function (data, fileName, startID, productStartID) {  
+ 
   var now = (new Date()).toLocaleString("zh-CN", {
     hour12: false
   });
@@ -67,8 +66,11 @@ var makeInsert = function (data, fileName, startID) {
     var colValue = null;
     switch (field.name) {
       case 'ID':
-        colValue = id++;
-        break;     
+        colValue = startID++;
+        break; 
+      case 'ProductID':
+        colValue = productStartID++;
+        break;             
       case 'BatchID':
         colValue = batchID;
         break;

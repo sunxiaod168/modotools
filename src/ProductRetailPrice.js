@@ -37,10 +37,10 @@ const Fields = [{
 ];
 const FieldsMapping = {
   'ID': null,
-  'ProductID': 'ID',
+  'ProductID': null,
   'PriceVersionID': null,
-  'ZZID': '组织编号',
-  'RetailPrice': '零售价',
+  'ZZID': '组织ID',
+  'RetailPrice': '销售价',
   'CreateUser': null,
   'CreateTime': null,
   'UpdateUser': null,
@@ -49,7 +49,7 @@ const FieldsMapping = {
 const insertSQL = require('./insertSQL');
 const uuidv1 = require('uuid/v1');
 
-var makeInsert = function (data, fileName, priceVersionID) {
+var makeInsert = function (data, fileName, productStartID, priceVersionID) {
  
   var now = (new Date()).toLocaleString("zh-CN", {
     hour12: false
@@ -61,6 +61,9 @@ var makeInsert = function (data, fileName, priceVersionID) {
     switch (field.name) {
       case 'ID':
         colValue = uuidv1();
+        break;    
+      case 'ProductID':
+        colValue = productStartID++;
         break;     
       case 'PriceVersionID':
         colValue = priceVersionID;

@@ -1,12 +1,22 @@
 const updateSQL = require('./UpdateSQL');
+const FieldsMapping = {    
+    'ZZID': '组织ID',
+    'ProductID': '物品ID',
+    'RetailPrice':'销售价'   
+  };
+  
 
-module.exports = function(data, fileName){
+function makeUpdate(data, fileName){
 
-    var fields = ['RetailPrice'];
+    var updateFields = [{name: 'RetailPrice', type: 'number'}];
+    var conditionFields = [{name: 'ZZID', type: 'string'}, {name: 'ProductID', type: 'number'}];
+    
     data.forEach(item => {
         item.RetailPrice = parseInt(item.RetailPrice);
     });
 
-    updateSQL(data, fileName, 'ProductRetailPrice', fields, 'ID', true);
+    updateSQL(data, fileName, 'ProductRetailPrice', updateFields, conditionFields, FieldsMapping);
 
 }
+
+module.exports.makeUpdate = makeUpdate;

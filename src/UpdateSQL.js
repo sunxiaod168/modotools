@@ -1,22 +1,30 @@
 const writeFile = require('write-file');
 
-var create = function (data, fileName, tableName, fields, keyCol, keyIsString) {
+var create = function (data, fileName, tableName, updateFields, conditionFields,  fieldsMapping) {
 
-    var Update = 'update [' + tableName + '] set {cols} where ' + keyCol + '={keyVal}' ;
-    if(keyIsString){
-        Update = 'update [' + tableName + '] set {cols} where ' + keyCol + '=\'{keyVal}\'' ;
-    }
+    var Update = 'update [' + tableName + '] set {fields} where {conditions}';
+    
     var sql = '';
 
     data.forEach(item => {
 
-        var cols = '';
-        fields.forEach(field => {
-            cols += ',' + field + '=' + item[field]           
+        var fields = '';
+        updateFields.forEach(field => {
+            var jsonField = fieldsMapping[field.name];
+            var value = field.type === 'string'? 'N\''+ item[jsonField] +'\'': item[jsonField];
+            fields += ',' + field.name + '=' + value;      
         });
-        cols = cols.substr(1);
-        var keyVal = item[keyCol];     
-        sql += Update.replace('{cols}', cols).replace('{keyVal}', keyVal) + '\n';
+        fields = fields.substr(1);
+
+        var conditions = '';
+        conditionFields.forEach(field => {
+            var jsonField = fieldsMapping[field.name];
+            var value = field.type === 'string'? 'N\''+ item[jsonField] +'\'': item[jsonField];
+            conditions += ' and ' + field.name + '=' + value;      
+        });
+        conditions = conditions.substr(5);
+
+        sql += Update.replace('{fields}', fields).replace('{conditions}', conditions) + '\n';
 
     });
 
